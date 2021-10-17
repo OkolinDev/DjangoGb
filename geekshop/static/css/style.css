@@ -38,6 +38,10 @@ html, body {
 	float: left;
 }
 
+.category_record.not_active{
+	opacity: 0.5;
+}
+
 .menu {
 	list-style-type: none;
 	margin-top: 67px;

@@ -17,10 +17,10 @@ def get_basket(user):
         return []
 
 def get_hot_product():
-    products = Product.objects.all()
+    products = Product.objects.filter(category__is_active=True)
     return random.sample(list(products), 1)[0]
 
-def get_same_product(hot_product):
+def get_same_products(hot_product):
     same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)[:3]
     return same_products
 
@@ -36,36 +36,37 @@ def main(request):
 def products(request, pk=None):
     print(pk)
     title = 'продукты'
-    links_menu = ProductCategory.objects.all()
+    links_menu = ProductCategory.objects.filter(is_active=True)
     basket = get_basket(request.user)
-    hot_product = get_hot_product()
-    same_products = get_same_product(hot_product)
+
     if pk is not None:
-        if pk == '0':
+        if pk == 0:
             products = Product.objects.all().order_by('price')
-            category = {'name': 'все'}
+            category = {'pk':0, 'name': 'все'}
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
             products = Product.objects.filter(category__pk=pk).order_by('price')
+
 
         content = {
             'title': title,
             'links_menu': links_menu,
             'category': category,
-            'hot_product': hot_product,
+
             'basket': basket,
-            'same_products': same_products,
+
             'products': products,
         }
 
         return render(request, 'mainapp/products_list.html', content)
 
-    same_products = Product.objects.all()
-
+    hot_product = get_hot_product()
+    same_products = get_same_products(hot_product)
     content = {
         'title': title,
         'links_menu': links_menu,
         'same_products': same_products,
+        'hot_product': hot_product,
         'basket': basket,
     }
 
@@ -74,7 +75,7 @@ def products(request, pk=None):
 
 def product(request, pk):
     title = 'продукты'
-    links_menu = ProductCategory.objects.all()
+    links_menu = ProductCategory.objects.filter(is_active=True)
     product = get_object_or_404(Product, pk=pk)
     content = {
         'title': title,
@@ -89,9 +90,4 @@ def product(request, pk):
 def contact(request):
     return render(request, 'mainapp/contact.html')
 
-
-
-def get_same_product(hot_product):
-    same_product = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)
-    return same_product
 
