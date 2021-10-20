@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView
 
 from adminapp.forms import ShopUserAdminEditForm
 from authapp.forms import ShopUserRegisterForm
@@ -70,3 +72,12 @@ def user_delete(request, pk):
     content = {'title': title, 'user_to_delete': user}
 
     return render(request, 'adminapp/user_delete.html', content)
+
+
+class UsersListView(ListView):
+    model = ShopUser
+    template_name = 'adminapp/users.html'
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
