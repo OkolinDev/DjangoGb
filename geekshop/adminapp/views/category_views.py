@@ -19,16 +19,16 @@ def categories(request):
     return render(request, 'adminapp/categories.html', content)
 
 
-def category_create(request):
-    pass
-
-
-def category_update(request, pk):
-    pass
-
-
-def category_delete(request, pk):
-    pass
+# def category_create(request):
+#     pass
+#
+#
+# def category_update(request, pk):
+#     pass
+#
+#
+# def category_delete(request, pk):
+#     pass
 
 
 class ProductCategoryCreateView(CreateView):
