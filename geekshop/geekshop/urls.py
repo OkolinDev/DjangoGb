@@ -14,6 +14,7 @@ urlpatterns = [
     path('basket/', include('basketapp.urls', namespace='basket')),
     path('', include('social_django.urls', namespace='social')),
     re_path(r'^auth/verify/google/oauth2/', include("social_django.urls", namespace="social")),
+    re_path(r'^order/', include('ordersapp.urls', namespace='order'))
 
 ]
 
