@@ -1,4 +1,4 @@
-psycopg2
+pip
 pillow
 django
 django-debug-toolbar
